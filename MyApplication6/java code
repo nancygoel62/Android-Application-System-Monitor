@@ -1,0 +1,125 @@
+package com.example.toshiba.myapplication6;
+
+import android.app.ActivityManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.StatFs;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.io.File;
+
+public class MainActivity extends AppCompatActivity {
+
+    private TextView text1,text3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        text1=(TextView)findViewById(R.id.textView);
+        text3=(TextView)findViewById(R.id.textView3);
+
+
+        int api_level= Build.VERSION.SDK_INT;
+        String android_version = Build.VERSION.RELEASE;
+
+        String api_level_string= Integer.toString(api_level);
+
+
+        //String security_patch_level = Build.VERSION.SECURITY_PATCH;
+
+        String Build_id = Build.DISPLAY;
+        String Device = Build.DEVICE;
+        String Hardware= Build.HARDWARE;
+        String manufacture= Build.MANUFACTURER;
+        String Model=Build.MODEL;
+        String Board_used= Build.BOARD;
+        String Product = Build.PRODUCT;
+        String hardware_Serail_no = Build.SERIAL;
+        String Type_of_device= Build.TYPE;
+        String BootLoader=Build.BOOTLOADER;
+
+        text1.setText("Device : "+Device+"\n\nManufacture  :  "+manufacture +"\n\nModel  :   "+Model+"\n\nAndroid Version  :  "+android_version+"\n\nAPI level :   "+ api_level_string+"\n\nHardware  :  "+Hardware+"\n\nBuild Id  :  "+Build_id+"\n\nProduct  :  "+Product+ "\n\nBoard Used  : "+Board_used+"\n\nHardware Serial No : "+hardware_Serail_no+"\n\nType  :  "+Type_of_device);
+        //text1.setText(android_version+api_level_string+Build_id+Device+Hardware);
+
+
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(mi);
+        long available_memory= mi.availMem;
+        long total_memory = mi.totalMem;
+        available_memory=available_memory/1048576;
+        total_memory=total_memory/1048576;
+
+        long  available_memory_percentage = (available_memory*100)/total_memory;
+
+        String available_memory_string = Long.toString(available_memory);
+        String total_memory_string = Long.toString(total_memory);
+        String available_memory_percentage_string = Long.toString(available_memory_percentage);
+
+        text3.setText("Total RAM  :  " + total_memory_string +" MB "+"\n\nAvailable RAM  :  "+available_memory_string+ " MB "+"("+available_memory_percentage_string+"%)");
+
+
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long totalmemory=   stat.getTotalBytes();
+        long availablememory =stat.getAvailableBytes();
+        totalmemory=totalmemory/(1024*1024); //total memory in MB
+        availablememory=availablememory/(1024*1024);
+
+        long availablememory_percentage=(availablememory*100)/totalmemory;
+
+        String totalmemory_string =Long.toString(totalmemory);
+        String availablememory_string=Long.toString(availablememory);
+        String availablememory_percentage_string= Long.toString(availablememory_percentage);
+
+
+        text3.setText("Total RAM  :  " + total_memory_string +" MB "+"\n\nAvailable RAM  :  "+available_memory_string+ " MB "+"("+available_memory_percentage_string+"%)"+"\n\nTotal Internal Memory  :  " +totalmemory_string+"\n\nAvailable Internal Memory  :   "+availablememory_string+"("+availablememory_percentage_string+"%)");
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+}
